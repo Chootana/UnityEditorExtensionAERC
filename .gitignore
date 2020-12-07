@@ -36,3 +36,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# Characters
+Characters/
+Characters.meta
