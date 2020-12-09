@@ -39,3 +39,11 @@ sysinfo.txt
 # Characters
 Characters/
 Characters.meta
+
+# Editor 
+Assets/Editor/EditorTest
+Assets/Scripts/ScriptsTest
+
+Avatars*
+
+Scenes/
