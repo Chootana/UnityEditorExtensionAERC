@@ -6,12 +6,18 @@ using UnityEngine.Animations;
 public class AddEveryRotationConstraint : EditorWindow
 {
     [SerializeField]
-    GameObject fromJoints = null;
+    GameObject fromJoint = null;
 
     [SerializeField]
-    GameObject toJoints = null;
+    GameObject toJoint = null;
 
     private ConstraintSource fromConstraintSource;
+    private bool includeInActive = false;
+
+    private string fromParentName = "None";
+    private string toNameRoot = "None";
+    private int fromChildrenSize = 0;
+    private int toChildrenSize = 0;
 
     [MenuItem("Window/VRChat")]
     static void Open()
@@ -21,19 +27,36 @@ public class AddEveryRotationConstraint : EditorWindow
 
     private void OnGUI()
     {
-        fromJoints = EditorGUILayout.ObjectField("from", fromJoints, typeof(GameObject), true) as GameObject;
-        toJoints = EditorGUILayout.ObjectField("to", toJoints, typeof(GameObject), true) as GameObject;
+        fromJoint = EditorGUILayout.ObjectField("from", fromJoint, typeof(GameObject), true) as GameObject;
+
+
+        // [TODO] ここを一つの関数にまとめる
+        fromParentName = GetParentName(fromJoint);
+        fromChildrenSize = GetChildrenSize(fromJoint);
+        EditorGUILayout.LabelField("Name", fromParentName);
+        EditorGUILayout.LabelField("Size ", fromChildrenSize.ToString());
+
+        GUILayout.Label("", EditorStyles.boldLabel);
+
+        toJoint = EditorGUILayout.ObjectField("to", toJoint, typeof(GameObject), true) as GameObject;
+
+        toNameRoot = GetParentName(toJoint);
+        toChildrenSize = GetChildrenSize(toJoint);
+        EditorGUILayout.LabelField("Name", toNameRoot);
+        EditorGUILayout.LabelField("Size ", toChildrenSize.ToString());
+
 
         GUILayout.Label("", EditorStyles.boldLabel);
         if (GUILayout.Button("Copy"))
         {
-            Copy(fromJoints, toJoints);
+            Copy(fromJoint, toJoint);   
         }
 
         GUILayout.Label("", EditorStyles.boldLabel);
+ 
         if (GUILayout.Button("Reset"))
         {
-            Reset(toJoints);
+            Reset(toJoint);
         }
     }
 
@@ -42,34 +65,54 @@ public class AddEveryRotationConstraint : EditorWindow
         Debug.Log(gameObject.name);
     }
 
-    void Copy(GameObject fromJoints, GameObject toJoints)
+    string GetParentName(GameObject obj)
     {
-        if (fromJoints == null)
+        if (obj == null)
+        {
+            return "None";
+        }
+        
+        string nameRoot = obj.name.ToString();
+        return nameRoot;
+        
+    }
+
+
+    int GetChildrenSize(GameObject obj)
+    {
+        if (obj == null)
+        {
+            return 0;
+        }
+
+        int childrenSize = obj.GetComponentsInChildren<Transform>(includeInActive).Length;
+        return childrenSize;
+    }
+
+    void Copy(GameObject fromJoint, GameObject toJoint)
+    {
+        if (fromJoint == null)
         {
             Debug.LogError("GameObject(from) not found");
-            return;
         }
-            
-        if (toJoints == null)
+
+        if (toJoint == null)
         {
             Debug.LogError("GameObject(to) not found");
-            return;
         }
 
-        ResetConstraintSource(fromConstraintSource);
-        fromConstraintSource.weight = 1.0f;
+        Transform[] fromChildren = fromJoint.GetComponentsInChildren<Transform>(includeInActive);
+        Transform[] toChildren = toJoint.GetComponentsInChildren<Transform>(includeInActive);
 
-        Transform[] fromChildren = fromJoints.GetComponentsInChildren<Transform>();
-        Transform[] toChildren = toJoints.GetComponentsInChildren<Transform>();
-
-        // [TODO] 本当に一致しているか？
-        // [TODO] デフォルトジョイントと一致したものだけ（トリガーで無理やり交換も可能にする，）
 
         if (fromChildren.Length != toChildren.Length)
         {
             Debug.LogError("Mismatch of the number of joints, (from): " + fromChildren.Length + " != (to): " + toChildren.Length);
             return;
         }
+
+        ResetConstraintSource(fromConstraintSource);
+        fromConstraintSource.weight = 1.0f;
 
         foreach (var (joint, index) in toChildren.Select((x, i) => (x, i)))
         {
@@ -104,7 +147,7 @@ public class AddEveryRotationConstraint : EditorWindow
             return;
         }
 
-        RotationConstraint[] rotationConstraints = toJoints.gameObject.GetComponentsInChildren<RotationConstraint>();
+        RotationConstraint[] rotationConstraints = toJoints.gameObject.GetComponentsInChildren<RotationConstraint>(includeInActive);
         foreach (RotationConstraint rotationConstraint in rotationConstraints)
         {
             Debug.Log(rotationConstraint);
