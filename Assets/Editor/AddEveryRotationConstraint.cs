@@ -14,12 +14,15 @@ public class AddEveryRotationConstraint : EditorWindow
     private ConstraintSource fromConstraintSource;
     private bool includeInActive = false;
 
-    private string fromParentName = "None";
-    private string toNameRoot = "None";
-    private int fromChildrenSize = 0;
-    private int toChildrenSize = 0;
+    // [TODO] 必要ないことを確認し，削除
+    //private string fromParentName = "None";
+    //private string toNameRoot = "None";
+    //private int fromChildrenSize = 0;
+    //private int toChildrenSize = 0;
+    private string parentName = "None";
+    private int childrenSize = 0; 
 
-    [MenuItem("Window/VRChat")]
+    [MenuItem("Window/VRChat/Add Every Rotation Constraint")]
     static void Open()
     {
         GetWindow<AddEveryRotationConstraint>();
@@ -27,42 +30,85 @@ public class AddEveryRotationConstraint : EditorWindow
 
     private void OnGUI()
     {
-        fromJoint = EditorGUILayout.ObjectField("from", fromJoint, typeof(GameObject), true) as GameObject;
-
-
-        // [TODO] ここを一つの関数にまとめる
-        fromParentName = GetParentName(fromJoint);
-        fromChildrenSize = GetChildrenSize(fromJoint);
-        EditorGUILayout.LabelField("Name", fromParentName);
-        EditorGUILayout.LabelField("Size ", fromChildrenSize.ToString());
-
-        GUILayout.Label("", EditorStyles.boldLabel);
-
-        toJoint = EditorGUILayout.ObjectField("to", toJoint, typeof(GameObject), true) as GameObject;
-
-        toNameRoot = GetParentName(toJoint);
-        toChildrenSize = GetChildrenSize(toJoint);
-        EditorGUILayout.LabelField("Name", toNameRoot);
-        EditorGUILayout.LabelField("Size ", toChildrenSize.ToString());
 
 
         GUILayout.Label("", EditorStyles.boldLabel);
-        if (GUILayout.Button("Copy"))
+
+
+
+        Color defaultColor = GUI.backgroundColor;
+        using (new GUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            Copy(fromJoint, toJoint);   
+            GUI.backgroundColor = Color.gray;
+            using (new GUILayout.HorizontalScope(EditorStyles.toolbar))
+            {
+                GUILayout.Label("Original Avatar", EditorStyles.whiteLabel);
+            }
+            GUI.backgroundColor = defaultColor;
+
+            EditorGUI.indentLevel++;
+            fromJoint = EditorGUILayout.ObjectField("GameObject (Joint)", fromJoint, typeof(GameObject), true) as GameObject;
+            ShowJointProperty(fromJoint);
+
+            EditorGUI.indentLevel--;
+
         }
 
+
         GUILayout.Label("", EditorStyles.boldLabel);
- 
-        if (GUILayout.Button("Reset"))
+
+
+        using (new GUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            Reset(toJoint);
+            GUI.backgroundColor = Color.gray;
+            using (new GUILayout.HorizontalScope(EditorStyles.toolbar))
+            {
+                GUILayout.Label("Target Avatar", EditorStyles.whiteLabel);
+            }
+            GUI.backgroundColor = defaultColor;
+
+            EditorGUI.indentLevel++;
+            toJoint = EditorGUILayout.ObjectField("GameObject (Joint)", toJoint, typeof(GameObject), true) as GameObject;
+            ShowJointProperty(toJoint);
+            EditorGUI.indentLevel--;
+        }
+        GUI.backgroundColor = defaultColor;
+
+
+        GUILayout.Label("", EditorStyles.boldLabel);
+
+
+        using (new GUILayout.HorizontalScope(GUI.skin.box))
+        {
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("Copy"))
+            {
+                Copy(fromJoint, toJoint);   
+            }
+            GUI.backgroundColor = defaultColor;
+
+
+            GUI.backgroundColor = Color.white;
+            if (GUILayout.Button("Reset"))  
+            {
+                Reset(toJoint);
+            }
+            GUI.backgroundColor = defaultColor;
         }
     }
 
     void Show(GameObject gameObject)
     {
         Debug.Log(gameObject.name);
+    }
+
+    void ShowJointProperty(GameObject obj)
+    {
+        parentName = GetParentName(obj);
+        childrenSize = GetChildrenSize(obj);
+        EditorGUILayout.LabelField("Root Name", parentName);
+        EditorGUILayout.LabelField("Number of Joints", childrenSize.ToString());
+
     }
 
     string GetParentName(GameObject obj)
@@ -72,7 +118,7 @@ public class AddEveryRotationConstraint : EditorWindow
             return "None";
         }
         
-        string nameRoot = obj.name.ToString();
+        string nameRoot = obj.transform.root.gameObject.name.ToString();
         return nameRoot;
         
     }
