@@ -10,7 +10,7 @@
 を繰り返し行ってくれる．
 
 # How to Use
-アバターにサブアームと装着することを例とする．
+アバターにサブアームを装着することを例とする．
 
 今回はサブアームを導入は既に済んでるとして，腕の関節それぞれにRotation Constraintを追加して同期させる．
 
@@ -30,14 +30,14 @@
     - Target Abatar: コピー先を指定する箇所
     - GameObject(Joint): Rotation Constraintを追加したいゲームオブジェクトを指定する
     - Root Name: 指定したゲームオブジェクトの最上層の親の名前が表示される
-    - Number of Joints: 指定したゲームオブジェクトとその子オブジェクトの数が表示される
+    - Number of Joints: 指定したゲームオブジェクトとその子オブジェクトの総計が表示される
 
     ![Explanation/Window](https://user-images.githubusercontent.com/44863813/102009753-fc1e1100-3d7c-11eb-9ba6-ec54bcbb8715.png)
 
 
 3. **Original Avatar**の方にコピー元となる腕（例えば本体アバターのSoulder.L）を，**Target Avatar**の方にコピー先となる腕（例えばサブアームのSoulder.L）をそれぞれに指定する．
     - この時Number of Jointsの値が一致しているか確認する．
-    - もし一致していなかったら対応していないゲームオブジェクトが含まれているので，そのオブジェクトを非アクティブにする．
+    - もし一致していなかったら階層的構造的に対応していないゲームオブジェクトが含まれているので，そのオブジェクトを非アクティブにする．
     
     ![Explain/AddGameObjectAndRun](https://user-images.githubusercontent.com/44863813/102012996-ac494500-3d90-11eb-98f1-142a2774141e.png)
 
