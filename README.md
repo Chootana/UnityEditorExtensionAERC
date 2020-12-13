@@ -12,18 +12,17 @@
 # How to Use
 アバターにサブアームと装着することを例とする．
 
-今回はサブアームを導入は既に済んでおり，腕の関節それぞれにRotation Constraintを追加して同期させたいとする．
+今回はサブアームを導入は既に済んでるとして，腕の関節それぞれにRotation Constraintを追加して同期させる．
 
 
 （サブアーム導入方法は[コチラ](https://booth.pm/ja/items/2203578)をおススメします．）
 
-<br />
 
 1. まずUnityでUnityEditor_AERC.unitypackageをインポートする．
     - Assets直下にEditorディレクトリがあることを確認する．
 
 2. インポート後，Unit上部のWindowタブにExtension Toolsが表示されるようになり，その下のAdd Every Rotation Constraintをクリックする．
-![Window/ExtensionTools](https://user-images.githubusercontent.com/44863813/102009739-d7c23480-3d7c-11eb-83c4-d99650156c21.png)
+    ![Window/ExtensionTools](https://user-images.githubusercontent.com/44863813/102009739-d7c23480-3d7c-11eb-83c4-d99650156c21.png)
 
 - 項目の説明
 
@@ -39,9 +38,21 @@
 3. **Original Avatar**の方にコピー元となる腕（例えば本体アバターのSoulder.L）を，**Target Avatar**の方にコピー先となる腕（例えばサブアームのSoulder.L）をそれぞれに指定する．
     - この時Number of Jointsの値が一致しているか確認する．
     - もし一致していなかったら対応していないゲームオブジェクトが含まれているので，そのオブジェクトを非アクティブにする．
-4. **Copy**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）にRotation Constraintが追加・設定される．
-5. **Reset**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）に存在するRotation Constraintが削除される．
-![Explain/AddGameObjectAndRun](https://user-images.githubusercontent.com/44863813/102009789-34bdea80-3d7d-11eb-8e02-c603ab1289d5.png)
+    
+    ![Explain/AddGameObjectAndRun](https://user-images.githubusercontent.com/44863813/102012996-ac494500-3d90-11eb-98f1-142a2774141e.png)
+
+4. **Copy**ボタンをクリックする．
+
+5. 肩から指先まですべてに**Rotation Constraint**が追加される.
+    - Is Activeにチェックが入る
+    - Constraint Settingsに**Original Avatar**の対応するTransformが追加される
+
+    ![Explain/AfterCopy](https://user-images.githubusercontent.com/44863813/102013333-b8360680-3d92-11eb-9a67-70e200836112.png)
+
+6. 右腕（Soulder.R）も同様に行う.
+
+7. **Reset**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）に存在するRotation Constraintが削除される．
+
 
 # Examples of Use
 VRChat用のアバター改変をする時に，以下のような作業が簡単になる！
@@ -54,7 +65,7 @@ VRChat用のアバター改変をする時に，以下のような作業が簡�
 
 などなど
 
-拡張スクリプト無しで以下の作業を行うと両腕だけで40回程度のポチポチ作業が必要になるので，このエディタ拡張をお試しあれ！
+これらの作業を行うと両腕だけで40回程度のポチポチ作業が必要になるので，めんどくさいと思った方はこのエディタ拡張をお試しあれ！
 
 ![Result](https://user-images.githubusercontent.com/44863813/102007590-d2112280-3d6d-11eb-9870-5ca335b6973c.png)
 
