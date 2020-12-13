@@ -168,9 +168,6 @@ public class AddEveryRotationConstraint : EditorWindow
                 continue;
             }
 
-            Debug.Log(joint.name.ToString()+" "+rotationConstraint.sourceCount);
-
-
             fromConstraintSource.sourceTransform = fromChildren[index];
 
             rotationConstraint.AddSource(fromConstraintSource);
@@ -199,7 +196,6 @@ public class AddEveryRotationConstraint : EditorWindow
         RotationConstraint[] rotationConstraints = toJoints.gameObject.GetComponentsInChildren<RotationConstraint>(includeInActive);
         foreach (RotationConstraint rotationConstraint in rotationConstraints)
         {
-            Debug.Log(rotationConstraint);
             GameObject.DestroyImmediate(rotationConstraint);
         }
 

@@ -34,11 +34,15 @@ sysinfo.txt
 
 # Builds
 *.apk
-*.unitypackage
+# *.unitypackage
 
 # Characters
 Characters/
 Characters.meta
+
+# UnityPackege
+Assets/*.unitypackage
+
 
 # Editor 
 Assets/Editor/EditorTest
