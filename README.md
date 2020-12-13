@@ -36,28 +36,32 @@
     ![Explanation/Window](https://user-images.githubusercontent.com/44863813/102009753-fc1e1100-3d7c-11eb-9ba6-ec54bcbb8715.png)
 
 
-3. Original Avatarの方にコピー元となる腕（例えば本体アバターのSoulder.L）を，Target Avatarの方にコピー先となる腕（例えばサブアームのSoulder.L）をそれぞれに指定する．
+3. **Original Avatar**の方にコピー元となる腕（例えば本体アバターのSoulder.L）を，**Target Avatar**の方にコピー先となる腕（例えばサブアームのSoulder.L）をそれぞれに指定する．
     - この時Number of Jointsの値が一致しているか確認する．
-    - もし一致していなかったら対応していないゲームオブジェクトが含まれているので，そのオブジェクトを非アクティブにする
-4. **Copy**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）にRotation Constraintが追加・設定される
-5. **Reset**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）に存在するRotation Constraintが削除される
+    - もし一致していなかったら対応していないゲームオブジェクトが含まれているので，そのオブジェクトを非アクティブにする．
+4. **Copy**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）にRotation Constraintが追加・設定される．
+5. **Reset**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）に存在するRotation Constraintが削除される．
 ![Explain/AddGameObjectAndRun](https://user-images.githubusercontent.com/44863813/102009789-34bdea80-3d7d-11eb-8e02-c603ab1289d5.png)
 
 # Examples of Use
 VRChat用のアバター改変をする時に，以下のような作業が簡単になる！
 
-- 頭にアバターを追加し，両腕を本体と同期させる
+
 - サブアームの追加する
+- 頭にアバターを追加し，両腕を本体と同期させる
 - アバターのフルトラッキング適正向上（後日追記）
 - 複数アバターのアニメーションを同期させる
 
 などなど
+
+拡張スクリプト無しで以下の作業を行うと両腕だけで40回程度のポチポチ作業が必要になるので，このエディタ拡張をお試しあれ！
+
 ![Result](https://user-images.githubusercontent.com/44863813/102007590-d2112280-3d6d-11eb-9870-5ca335b6973c.png)
 
-善きVRChatライフを！
+では善きVRChatライフを！
 
 # Notes
-説明のため[ロポリこんちゃん](https://mido0021.booth.pm)，[稲荷原](https://booth.pm/ja/items/2297510)，[メカアーム](https://booth.pm/ja/items/1221319)を使用するが，本製品に含まれていない．
+説明のため[ロポリこんちゃん](https://mido0021.booth.pm)，[稲荷原](https://booth.pm/ja/items/2297510)，[メカアーム](https://booth.pm/ja/items/1221319)を使用したが，本プロジェクトに含まれていない．
 
 # Author
 chootana (ちゅーたな)
@@ -66,4 +70,4 @@ twitter: [@choo_zap](https://twitter.com/choo_zap)
 
 # License
 
-AERC is released under the [MIT license](https://opensource.org/licenses/mit-license.php).
+This software is released under the MIT License, see LICENSE.txt
