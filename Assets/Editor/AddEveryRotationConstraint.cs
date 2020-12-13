@@ -14,15 +14,10 @@ public class AddEveryRotationConstraint : EditorWindow
     private ConstraintSource fromConstraintSource;
     private bool includeInActive = false;
 
-    // [TODO] 必要ないことを確認し，削除
-    //private string fromParentName = "None";
-    //private string toNameRoot = "None";
-    //private int fromChildrenSize = 0;
-    //private int toChildrenSize = 0;
     private string parentName = "None";
     private int childrenSize = 0; 
 
-    [MenuItem("Window/VRChat/Add Every Rotation Constraint")]
+    [MenuItem("Window/Extension Tools/Add Every Rotation Constraint")]
     static void Open()
     {
         GetWindow<AddEveryRotationConstraint>();
@@ -168,6 +163,14 @@ public class AddEveryRotationConstraint : EditorWindow
                 rotationConstraint = joint.gameObject.AddComponent<RotationConstraint>();
             }
 
+            if (rotationConstraint.sourceCount > 0)
+            {
+                continue;
+            }
+
+            Debug.Log(joint.name.ToString()+" "+rotationConstraint.sourceCount);
+
+
             fromConstraintSource.sourceTransform = fromChildren[index];
 
             rotationConstraint.AddSource(fromConstraintSource);
@@ -197,8 +200,9 @@ public class AddEveryRotationConstraint : EditorWindow
         foreach (RotationConstraint rotationConstraint in rotationConstraints)
         {
             Debug.Log(rotationConstraint);
-            Debug.Log("Delete: " + rotationConstraint.name + "'s Rotation Constraint");
             GameObject.DestroyImmediate(rotationConstraint);
         }
+
+        Debug.Log("Remove Rotation Constraints");
     }
 }
