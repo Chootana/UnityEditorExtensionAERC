@@ -47,7 +47,7 @@
     - Is Activeにチェックが入る
     - Constraint Settingsに**Original Avatar**の対応するTransformが追加される
 
-    ![Explain/AfterCopy](https://user-images.githubusercontent.com/44863813/102013333-b8360680-3d92-11eb-9a67-70e200836112.png)
+    ![Explain/AfterCopy](https://user-images.githubusercontent.com/44863813/102013550-4494f900-3d94-11eb-910c-e249345239cf.png)
 
 6. 右腕（Soulder.R）も同様に行う.
 
