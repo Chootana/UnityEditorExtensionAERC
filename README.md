@@ -21,7 +21,7 @@
 1. まずUnityでUnityEditor_AERC.unitypackageをインポートする．
     - Assets直下にEditorディレクトリがあることを確認する．
 
-2. インポート後，Unit上部のWindowタブにExtension Toolsが表示されるようになり，その下のAdd Every Rotation Constraintをクリックする．
+2. インポート後，Unity上部のWindowタブにExtension Toolsが表示されるようになり，その下のAdd Every Rotation Constraintをクリックする．
     ![Window/ExtensionTools](https://user-images.githubusercontent.com/44863813/102009739-d7c23480-3d7c-11eb-83c4-d99650156c21.png)
 
 - 項目の説明
@@ -51,7 +51,11 @@
 
 6. 右腕（Soulder.R）も同様に行う.
 
-7. **Reset**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）に存在するRotation Constraintが削除される．
+7. 3.の時に非アクティブにしたゲームオブジェクトがあれば，アクティブに戻す
+
+8. 完成！
+
+    - **Reset**ボタンをクリックすると，Target Avatar側のゲームオブジェクト（及び子オブジェクト）に存在するRotation Constraintが削除される．
 
 
 # Examples of Use
