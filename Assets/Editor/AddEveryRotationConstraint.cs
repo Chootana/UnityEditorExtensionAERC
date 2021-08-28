@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using System;
 using System.Linq;
 using UnityEngine.Animations;
 
@@ -16,6 +17,16 @@ public class AddEveryRotationConstraint : EditorWindow
 
     private string parentName = "None";
     private int childrenSize = 0; 
+
+    private enum CONSTRAINT_TYPE
+    {
+        RotationConstraint,
+        ParentConstraint,
+        PositionConstraint,
+    }
+
+    private CONSTRAINT_TYPE constraintType = CONSTRAINT_TYPE.RotationConstraint;
+
 
     [MenuItem("Window/Extension Tools/Add Every Rotation Constraint")]
     static void Open()
@@ -71,6 +82,8 @@ public class AddEveryRotationConstraint : EditorWindow
 
 
         GUILayout.Label("", EditorStyles.boldLabel);
+
+        constraintType = (CONSTRAINT_TYPE)EditorGUILayout.EnumPopup("Constraint Type", constraintType);
 
 
         using (new GUILayout.HorizontalScope(GUI.skin.box))
@@ -155,29 +168,51 @@ public class AddEveryRotationConstraint : EditorWindow
         ResetConstraintSource(fromConstraintSource);
         fromConstraintSource.weight = 1.0f;
 
+
         foreach (var (joint, index) in toChildren.Select((x, i) => (x, i)))
         {
-            RotationConstraint rotationConstraint = joint.gameObject.GetComponent<RotationConstraint>();
-            if (rotationConstraint == null)
+
+            switch(constraintType)
             {
-                rotationConstraint = joint.gameObject.AddComponent<RotationConstraint>();
+                case CONSTRAINT_TYPE.RotationConstraint:
+                    RotationConstraint rotationConstraint = joint.gameObject.GetComponent<RotationConstraint>();
+                    if (rotationConstraint == null) rotationConstraint = joint.gameObject.AddComponent<RotationConstraint>();
+                    if (rotationConstraint.sourceCount > 0) continue;
+                    fromConstraintSource.sourceTransform = fromChildren[index];
+                    rotationConstraint.AddSource(fromConstraintSource);
+                    rotationConstraint.constraintActive = true;
+                    break;
+
+                case CONSTRAINT_TYPE.ParentConstraint:
+                    ParentConstraint parentConstraint = joint.gameObject.GetComponent<ParentConstraint>();
+                    if (parentConstraint == null) parentConstraint = joint.gameObject.AddComponent<ParentConstraint>();
+                    if (parentConstraint.sourceCount > 0) continue;
+                    fromConstraintSource.sourceTransform = fromChildren[index];
+                    parentConstraint.AddSource(fromConstraintSource);
+                    parentConstraint.constraintActive = true;
+                    break;
+
+                case CONSTRAINT_TYPE.PositionConstraint:
+                    PositionConstraint positionConstraint = joint.gameObject.GetComponent<PositionConstraint>();
+                    if (positionConstraint == null) positionConstraint = joint.gameObject.AddComponent<PositionConstraint>();
+                    if (positionConstraint.sourceCount > 0) continue;
+                    fromConstraintSource.sourceTransform = fromChildren[index];
+                    positionConstraint.AddSource(fromConstraintSource);
+                    positionConstraint.constraintActive = true;
+                    break;
+
+                default:
+                    break;
+
             }
-
-            if (rotationConstraint.sourceCount > 0)
-            {
-                continue;
-            }
-
-            fromConstraintSource.sourceTransform = fromChildren[index];
-
-            rotationConstraint.AddSource(fromConstraintSource);
-            rotationConstraint.constraintActive = true;
         }
 
-        Debug.Log("Add Rotation Constraint to Every Joints");
+        Debug.Log($"Add {constraintType} to Every Joints");
         ResetConstraintSource(fromConstraintSource);
         return;
     }
+
+
 
     void ResetConstraintSource(ConstraintSource constraintSource)
     {
@@ -193,12 +228,28 @@ public class AddEveryRotationConstraint : EditorWindow
             return;
         }
 
-        RotationConstraint[] rotationConstraints = toJoints.gameObject.GetComponentsInChildren<RotationConstraint>(includeInActive);
-        foreach (RotationConstraint rotationConstraint in rotationConstraints)
+        switch(constraintType)
         {
-            GameObject.DestroyImmediate(rotationConstraint);
+            case CONSTRAINT_TYPE.RotationConstraint:
+                RotationConstraint[] rotationConstraints = toJoints.gameObject.GetComponentsInChildren<RotationConstraint>(includeInActive);
+                foreach (RotationConstraint rotationConstraint in rotationConstraints) GameObject.DestroyImmediate(rotationConstraint);
+                break;
+
+            case CONSTRAINT_TYPE.ParentConstraint:
+                ParentConstraint[] parentConstraints = toJoints.gameObject.GetComponentsInChildren<ParentConstraint>(includeInActive);
+                foreach (ParentConstraint parentConstraint in parentConstraints) GameObject.DestroyImmediate(parentConstraint);
+                break;
+
+            case CONSTRAINT_TYPE.PositionConstraint:
+                PositionConstraint[] positionConstraints = toJoints.gameObject.GetComponentsInChildren<PositionConstraint>(includeInActive);
+                foreach (PositionConstraint positionConstraint in positionConstraints) GameObject.DestroyImmediate(positionConstraint);
+                break;
+
+            default:
+                break;
+
         }
 
-        Debug.Log("Remove Rotation Constraints");
+        Debug.Log($"Remove {constraintType}");
     }
 }

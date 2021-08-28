@@ -47,6 +47,7 @@ Assets/*.unitypackage
 # Editor 
 Assets/Editor/EditorTest
 Assets/Scripts/ScriptsTest
+Assets/External*
 
 Avatars*
 
